@@ -12,6 +12,11 @@ def extract(tree:ast, raw_code:list[str]):
         if isinstance(node, ast.Call):
             call_visitor = FunctionCallVisitor()
             call_visitor.visit(node.func)
+
+            # 1. find immediate parent (i.e. scope of where this function was called)
+            # 2. find what function is being called (i.e. scope of where this function was defined)
+            # 3. connect (1) to (2) via `Edge`
+            
             
         elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)):
             func_visitor = UserDefinedFuncVisitor()
@@ -31,7 +36,7 @@ def extract(tree:ast, raw_code:list[str]):
 
         g.add_edge(parent_node, node)
 
-filename = "test/complex_structure.py"
+filename = "test/arithmetics.py"
 tree, raw_code = utils.parse_file(filename)
 
 extract(tree, raw_code)
