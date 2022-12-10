@@ -1,5 +1,17 @@
 from typing import Union
 
+# define a new type `ArithmeticInput` that can be either int or float
+# Note: you can't do: type('ArithmeticInput', (int, float), {})
+# because you're int and float have a common base class which creates lay-out conflict.
+ArithmeticInput = Union[int, float]
+
+temp = lambda x: (
+    i**2 for i in x
+)
+
+def temp(x):
+    return (i**2 for i in x)
+
 class Math:
     """ Simple class that defines basic numerical operations """
     def __init__(self) -> None:
@@ -9,22 +21,22 @@ class Math:
     def buffer(self):
         return self._buffer
 
-    def _add_output_to_buffer(self, result:Union[int, float]):
+    def _add_output_to_buffer(self, result:ArithmeticInput):
         self.buffer.append(result)
         
-    def add(self, op1:Union[int, float], op2:Union[int, float]):
+    def add(self, op1:ArithmeticInput, op2:ArithmeticInput):
         ans = op1 + op2
         self._add_output_to_buffer(ans)
         return ans
-    def sub(self, op1:Union[int, float], op2:Union[int, float]):
+    def sub(self, op1:ArithmeticInput, op2:ArithmeticInput):
         ans = op1 - op2
         self._add_output_to_buffer(ans)
         return ans
-    def mul(self, op1:Union[int, float], op2:Union[int, float]):
+    def mul(self, op1:ArithmeticInput, op2:ArithmeticInput):
         ans = op1 * op2
         self._add_output_to_buffer(ans)
         return ans
-    def div(self, op1:Union[int, float], op2:Union[int, float]):
+    def div(self, op1:ArithmeticInput, op2:ArithmeticInput):
         def is_division_by_zero(num):
             if num == 0:
                 return True
@@ -36,7 +48,7 @@ class Math:
         self._add_output_to_buffer(ans)
         return ans
 
-    def output_basic_operations(self, op1:Union[int, float], op2:Union[int, float]):
+    def output_basic_operations(self, op1:ArithmeticInput, op2:ArithmeticInput):
         assert isinstance(op1, (int, float)), "`op1` Must be either int or float"
         assert isinstance(op2, (int, float)), "`op2` Must be either int or float"
         self.add(op1, op2)
