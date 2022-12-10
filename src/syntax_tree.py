@@ -9,8 +9,7 @@ class FunctionCallVisitor(ast.NodeVisitor):
 
     @property
     def name(self):
-        return self._name[-1]
-        # return '.'.join(self._name)
+        return '.'.join(self._name)
 
     @name.deleter
     def name(self):
