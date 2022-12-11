@@ -2,14 +2,17 @@ import ast
 from network import Node
 from collections import deque
 
+
 class FunctionCallVisitor(ast.NodeVisitor):
-    """ Extract all function calls """
+    """Extract all function calls"""
+
     def __init__(self):
         self._name = deque()
 
     @property
     def name(self):
-        return '.'.join(self._name)
+        return self._name[-1]
+        # return ".".join(self._name)
 
     @name.deleter
     def name(self):
@@ -25,22 +28,25 @@ class FunctionCallVisitor(ast.NodeVisitor):
         except AttributeError:
             self.generic_visit(node)
 
-class UserDefinedFuncVisitor(ast.NodeVisitor):
-    """ Extract all user defined functions and classes """
-    def __init__(self):
-        self.node:Node = None
 
-    def create_node(self, node:ast.AST, node_name:str):
-        self.node = Node(node.lineno - 1, node.end_lineno - 1, node_name)
-        
+class UserDefinedFuncVisitor(ast.NodeVisitor):
+    """Extract all user defined functions and classes"""
+
+    def __init__(self):
+        self.node: Node = None
+
+    def create_node(self, node: ast.AST, node_name: str, type: str):
+        self.node = Node(node.lineno - 1, node.end_lineno - 1, node_name, type)
+
     def visit_Lambda(self, node: ast.Lambda):
-        self.create_node(node, "lambda")
+        raise NotImplementedError("Lambda functions are not supported yet")
+        self.create_node(node, "lambda", "function")
 
     def visit_FunctionDef(self, node: ast.FunctionDef):
-        self.create_node(node, node.name)
-        
+        self.create_node(node, node.name, "function")
+
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
-        self.create_node(node, node.name)
+        self.create_node(node, node.name, "function")
 
     def visit_ClassDef(self, node: ast.ClassDef):
-        self.create_node(node, node.name)
+        self.create_node(node, node.name, "class")

@@ -3,34 +3,29 @@ import matplotlib.pyplot as plt
 
 # Contains definitions for node, edge, NodeCreation, and EdgeCreation graph representations
 
+
 class Node:
-    def __init__(self, line_start:int, line_end:int, name:str, children=[], parent=None, edges=[]):
+    def __init__(
+        self,
+        line_start: int,
+        line_end: int,
+        name: str,
+        type: str = None,
+    ):
         self.line_start = line_start
         self.line_end = line_end
         self.name = name
-
-        self.children:list[Node] = children
-        self.parent:Node = parent
-        self.edges:list[Node] = edges
-
-    def is_child_node(self, node):
-        """ Return true if `node` is a child node of `self` """
-        for child in self.children:
-            if child == node:
-                return True
-        return False
-    def is_parent_node(self, node):
-        """ Return true if `node` is parent node of `self` """
-        return node == self.parent
+        self.type = type  # options: [function, class]
 
     def __repr__(self) -> str:
-        return f"{self.name}({self.line_start}, {self.line_end})"
+        return f"{self.name}({self.line_start}, {self.line_end}, {self.type})"
 
-class NodeRepresentationGraph:
+
+class Graph:
     def __init__(self):
         self.G = nx.DiGraph()
 
-    def add_edge(self, node1:Node, node2:Node):
+    def add_edge(self, node1: Node, node2: Node):
         self.G.add_edge(node1, node2)
 
     def draw_graph(self):
