@@ -5,11 +5,6 @@ from typing import Union
 # because you're int and float have a common base class which creates lay-out conflict.
 ArithmeticInput = Union[int, float]
 
-temp = lambda x: (i**2 for i in x)
-
-
-temp(10)
-
 
 class Math:
     """Simple class that defines basic numerical operations"""
