@@ -54,6 +54,9 @@ class Graph:
                 continue
             self._level_clustering[parent_node] = self.get_children_nodes(parent_node)
 
+    def is_leaf_node(self, node: Node) -> bool:
+        return len(self.get_children_nodes(node)) == 0
+
     def print_graph_by_levels(self):
         """
         Print the graph by levels.
@@ -100,6 +103,8 @@ class Graph:
             for child_node in children_nodes:
                 print(f"\t{child_node}")
 
-    def draw_graph(self):
-        nx.draw_networkx(self.G)
+    def draw_graph(self, G=None):
+        if G is None:
+            G = self.G
+        nx.draw_networkx(G)
         plt.show()

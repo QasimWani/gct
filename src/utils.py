@@ -8,7 +8,14 @@ def generate_random_color():
     return f"#{random.randint(0, 255):02x}{random.randint(0, 255):02x}{random.randint(0, 255):02x}"
 
 
-def parse_file(filename):
+def parse_file(filename: str):
+    if filename.startswith("http"):
+        import requests
+
+        response = requests.get(filename)
+        tree = ast.parse(response.text, filename=filename)
+        return tree, response.text.splitlines()
+
     with open(filename, "r") as f:
         tree = ast.parse(f.read(), filename=filename)
         f.seek(0)

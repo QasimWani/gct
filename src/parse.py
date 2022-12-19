@@ -50,6 +50,9 @@ def extract(tree: ast, raw_code: list[str]):
             potential_target_nodes = utils.find_function_of_interest(
                 node_line_map, call_visitor.name
             )
+            # ignore all root connections for now
+            if source_node.line_start == -1:
+                continue
             # create an edge for each potential target node with source node
             for target_node in potential_target_nodes:
                 edge_creation_graph.add_edge(source_node, target_node)
