@@ -1,11 +1,13 @@
 import ast
-from network import Node
+from network import Node, Graph
 import random
+import type_check as tc
+import constants
 
 
 def generate_random_color():
-    """Generate random primary color gradient"""
-    return f"#{random.randint(0, 255):02x}{random.randint(0, 255):02x}{random.randint(0, 255):02x}"
+    """Generate random color in hex format with alpha channel set to 60"""
+    return f"#{random.randint(0, 255):02x}{random.randint(0, 255):02x}{random.randint(0, 255):02x}60"
 
 
 def parse_file(filename: str):
@@ -66,7 +68,11 @@ def get_immediate_parent(lines: list[str], lineno: int):
         return -1  # root node
 
     start_indent = get_indent_number(lines[lineno])
-    is_line_function_or_class = lambda line: line.strip().startswith(("def", "class"))
+
+    def is_line_function_or_class(line: str):
+        if line.strip().split(" ")[0] == "def" or line.strip().split(" ")[0] == "class":
+            return True
+        return False
 
     if start_indent == 0:  # at root level
         return -1
@@ -85,7 +91,7 @@ def get_immediate_parent(lines: list[str], lineno: int):
     raise ValueError(f"No parent found. source line: {lineno}")
 
 
-def find_function_of_interest(node_line_map: dict[int, Node], name: str) -> list[Node]:
+def find_function_of_interest(name: str, metadata: tc.Metadata) -> list[Node]:
     """
     Given a function name, find the function of interest in the node_line_map.
     Ignoring class definition calls for now.
@@ -95,8 +101,25 @@ def find_function_of_interest(node_line_map: dict[int, Node], name: str) -> list
     2. name: str = name of function of interest.
     @Returns: list of potential target `Node` for function of interest.
     """
+    prefix, suffix = tc.get_prefix_and_suffix(name)
+
     potential_target_nodes: list[Node] = []
-    for node in node_line_map.values():
-        if node.name == name and node.type == "function":
-            potential_target_nodes.append(node)
+
+    if prefix:
+        if prefix == constants.SELF_NODE_NAME:
+            # get 2nd level parent node
+            bilevel_parent_lineno = get_immediate_parent(
+                metadata.raw_code, metadata.parent_lineno
+            )
+            # get node name at bilevel parent node line number
+            if bilevel_parent_lineno != constants.ROOT_NODE_LINENO:
+                bilevel_parent_node = metadata.node_line_map[bilevel_parent_lineno]
+                prefix = bilevel_parent_node.name
+
+        potential_target_nodes = tc.infer_complex_mappings(prefix, suffix, metadata)
+    else:
+        potential_target_nodes = tc.infer_direct_mappings(
+            metadata.node_line_map, suffix
+        )
+
     return potential_target_nodes

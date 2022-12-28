@@ -2,11 +2,19 @@ import ast
 import utils
 from syntax_tree import FunctionCallVisitor, UserDefinedFuncVisitor
 from network import Node, Graph
+import constants
+from type_check import Metadata
 
 
 def extract(tree: ast, raw_code: list[str]):
     """2 pass algorithm"""
-    node_line_map: dict[int, Node] = {-1: Node(-1, len(raw_code), "root")}
+    # x = ast.dump(tree, indent=4)
+    # with open("tree.txt", "w") as f:
+    #     f.write(x)
+
+    node_line_map: dict[int, Node] = {
+        constants.ROOT_NODE: Node(constants.ROOT_NODE_LINENO, len(raw_code), "root")
+    }
     node_creation_graph = Graph()
     edge_creation_graph = Graph()
 
@@ -20,13 +28,14 @@ def extract(tree: ast, raw_code: list[str]):
     # Node connection
     for start_lineno, node in node_line_map.items():
         node: Node = node
-        if start_lineno == -1:  # root node has no parent. skip connection
+        if (
+            start_lineno == constants.ROOT_NODE_LINENO
+        ):  # root node has no parent. skip connection
             continue
-
         parent_lineno: int = utils.get_immediate_parent(raw_code, start_lineno)
         parent_node: Node = node_line_map[parent_lineno]
-        node_creation_graph.add_edge(parent_node, node)
 
+        node_creation_graph.add_edge(parent_node, node)
     # Edge connection
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
@@ -40,6 +49,7 @@ def extract(tree: ast, raw_code: list[str]):
             line_start_source_function = utils.get_immediate_parent(
                 raw_code, node.lineno - 1
             )
+
             source_node: Node = None
 
             if line_start_source_function in node_line_map:
@@ -48,11 +58,20 @@ def extract(tree: ast, raw_code: list[str]):
                 continue  # skip if source function is not defined in the file
 
             potential_target_nodes = utils.find_function_of_interest(
-                node_line_map, call_visitor.name
+                call_visitor.name,
+                Metadata(
+                    tree,
+                    raw_code,
+                    node_creation_graph,
+                    node_line_map,
+                    line_start_source_function,
+                ),
             )
+
             # ignore all root connections for now
-            if source_node.line_start == -1:
+            if source_node.line_start == constants.ROOT_NODE_LINENO:
                 continue
+
             # create an edge for each potential target node with source node
             for target_node in potential_target_nodes:
                 edge_creation_graph.add_edge(source_node, target_node)

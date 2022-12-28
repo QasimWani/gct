@@ -1,6 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from copy import deepcopy
+import uuid
 
 
 class Node:
@@ -15,8 +15,11 @@ class Node:
         self.line_end = line_end
         self.name = name
         self.type = type  # options: [function, class]
+        self.id = uuid.uuid1().hex
 
     def __repr__(self) -> str:
+        # return f"{self.name}"
+        return f"{self.name} #{self.line_start}"
         return f"{self.name}({self.line_start}, {self.line_end}, {self.type})"
 
 
@@ -36,6 +39,13 @@ class Graph:
         return list(self.G.nodes)
 
     def get_parent_node(self, node: Node) -> Node:
+        """
+        > Given a node, return the parent node
+
+        :param node: The node to get the parent of
+        :type node: Node
+        :return: The parent node of the node passed in.
+        """
         try:
             return list(self.G.predecessors(node))[0]
         except:
