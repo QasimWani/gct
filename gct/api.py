@@ -1,3 +1,27 @@
+""" 
+Graphical Code Tracer (GCT) is a static code analysis tool that generates 
+a graphical representation of a Python program. It shows how different parts
+of the program interact with each other. GCT is built on top of the AST module
+and thus isn't always 100% accurate due to the dynamic nature of Python.
+
+GCT, however, still provides a good overview of the program and can be used
+to quickly identify potential bugs, understand the general flow of a program,
+and onboard new developers to any python codebase.
+
+GCT is currently limited to file-level tracing. This means that it can only
+trace functions and classes that are defined in the same file. If you enjoy
+GCT, please consider contributing to the project to extend its functionality.
+https://github.com/QasimWani/gct
+
+
+Running GCT on any python3 file is as simple as:
+
+>>> import gct.api as api
+>>> path = "example/arithmetics.py"
+>>> graph, code = api.run(path)
+>>> api.render(graph, "temp/graph")
+
+"""
 import graphviz
 
 import gct.utils as utils
@@ -46,3 +70,14 @@ def run(resource_name: str) -> list[graphviz.Digraph, str]:
         return g, "\n".join(raw_code)
 
     raise Exception("No user-defined functions/class definitions found.")
+
+
+def render(graph: graphviz.Digraph, file_path: str, format: str = "svg"):
+    """
+    Renders the graphviz object to a file.
+    @Parameters:
+    1. graphviz_object: graphviz.Digraph = Graphviz object to render.
+    2. file_path: str = file path to save the output to.
+    3. format: str = Format of the file to render the graph to.
+    """
+    graph.render(file_path, format=format)
