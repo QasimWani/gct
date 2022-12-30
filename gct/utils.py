@@ -39,16 +39,25 @@ def flush(path: str):
                 print("Failed to delete %s. Reason: %s" % (file_path, e))
 
 
-def parse_file(filename: str):
-    if filename.startswith("http"):
-        response = requests.get(filename)
-        tree = ast.parse(response.text, filename=filename)
+def parse_file(resource: str):
+    """
+    A resource can either be:
+    1. URL - in which case we fetch the code and parse it.
+    2. Path to a file - in which case we read the file and parse it.
+    3. Raw code - in which case we parse it directly.
+    """
+    if resource.startswith("http"):
+        response = requests.get(resource)
+        tree = ast.parse(response.text, filename=resource)
         return tree, response.text.splitlines(True)
-
-    with open(filename, "r") as f:
-        tree = ast.parse(f.read(), filename=filename)
-        f.seek(0)
-        return tree, f.readlines()
+    elif resource.endswith(".py"):
+        with open(resource, "r") as f:
+            tree = ast.parse(f.read(), filename=resource)
+            f.seek(0)
+            return tree, f.readlines()
+    else:
+        tree = ast.parse(resource)
+        return tree, resource.splitlines(True)
 
 
 def get_indent_number(line: str):

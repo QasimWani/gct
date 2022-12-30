@@ -19,7 +19,11 @@ Running GCT on any python3 file is as simple as:
 >>> import gct.api as api
 >>> path = "example/arithmetics.py"
 >>> graph, code = api.run(path)
->>> api.render(graph, "temp/graph")
+>>> api.render(graph, file_name="temp/graph")
+
+If you want to load the svg object in memory instead of saving it to a file, 
+leave `file_name` in api.run as None.
+>>> svg_as_string = api.run(graph)
 
 """
 import graphviz
@@ -28,6 +32,7 @@ import gct.utils as utils
 from gct.parse import extract
 import time
 from gct.constants import TEMP_FOLDER
+import subprocess
 
 
 def run(resource_name: str) -> list[graphviz.Digraph, str]:
@@ -72,12 +77,18 @@ def run(resource_name: str) -> list[graphviz.Digraph, str]:
     raise Exception("No user-defined functions/class definitions found.")
 
 
-def render(graph: graphviz.Digraph, file_path: str, format: str = "svg"):
+def render(graph: graphviz.Digraph, file_path: str = None) -> str:
     """
     Renders the graphviz object to a file.
     @Parameters:
     1. graphviz_object: graphviz.Digraph = Graphviz object to render.
-    2. file_path: str = file path to save the output to.
-    3. format: str = Format of the file to render the graph to.
+    2. file_path: str = file path to save the output to. If None, the svg output (str) will be returned.
     """
+    if file_path is None:
+        result = subprocess.run(
+            ["dot", "-Tsvg"], input=graph.source, capture_output=True, text=True
+        )
+        return result.stdout
+
     graph.render(file_path, format=format)
+    return ""
