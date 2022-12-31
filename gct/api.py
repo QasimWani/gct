@@ -19,7 +19,7 @@ Running GCT on any python3 file is as simple as:
 >>> import gct.api as api
 >>> path = "example/arithmetics.py"
 >>> graph, code = api.run(path)
->>> api.render(graph, file_name="temp/graph")
+>>> api.render(graph, file_name="temp/graph", output_format="pdf")
 
 If you want to load the svg object in memory instead of saving it to a file, 
 leave `file_name` in api.run as None.
@@ -69,20 +69,21 @@ def run(resource_name: str) -> list[graphviz.Digraph, str]:
         for u, v in edges:
             g.edge(u.id, v.id)
 
-        # g.render(filename=f"{TEMP_FOLDER}/graph", format="svg")
-
         print(f"Successfully generated graph in {time.time() - start_time:.2f} seconds")
         return g, "\n".join(raw_code)
 
     raise Exception("No user-defined functions/class definitions found.")
 
 
-def render(graph: graphviz.Digraph, file_path: str = None) -> str:
+def render(
+    graph: graphviz.Digraph, file_path: str = None, output_format: str = "svg"
+) -> str:
     """
     Renders the graphviz object to a file.
     @Parameters:
     1. graphviz_object: graphviz.Digraph = Graphviz object to render.
     2. file_path: str = file path to save the output to. If None, the svg output (str) will be returned.
+    3. output_format: str = Output format. Defaults to svg. Other formats include "png", "pdf".
     """
     if file_path is None:
         result = subprocess.run(
@@ -90,5 +91,5 @@ def render(graph: graphviz.Digraph, file_path: str = None) -> str:
         )
         return result.stdout
 
-    graph.render(file_path, format=format)
+    graph.render(file_path, format=output_format)
     return ""
