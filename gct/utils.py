@@ -49,7 +49,7 @@ def parse_file(resource: str):
     if resource.startswith("http"):
         response = requests.get(resource)
         tree = ast.parse(response.text, filename=resource)
-        return tree, response.text.splitlines(True)
+        return tree, response.text.splitlines()
     elif resource.endswith(".py"):
         with open(resource, "r") as f:
             tree = ast.parse(f.read(), filename=resource)
@@ -57,7 +57,7 @@ def parse_file(resource: str):
             return tree, f.readlines()
     else:
         tree = ast.parse(resource)
-        return tree, resource.splitlines(True)
+        return tree, resource.splitlines()
 
 
 def get_indent_number(line: str):
