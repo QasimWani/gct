@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 import uuid
 
 
@@ -18,9 +17,7 @@ class Node:
         self.id = uuid.uuid1().hex
 
     def __repr__(self) -> str:
-        # return f"{self.name}"
         return f"{self.name} #{self.line_start + 1}"
-        return f"{self.name}({self.line_start}, {self.line_end}, {self.type})"
 
 
 class Graph:
@@ -117,9 +114,3 @@ class Graph:
             print(f"--- {parent_node} ---")
             for child_node in children_nodes:
                 print(f"\t{child_node}")
-
-    def draw_graph(self, G=None):
-        if G is None:
-            G = self.G
-        nx.draw_networkx(G)
-        plt.show()
