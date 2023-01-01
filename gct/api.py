@@ -31,8 +31,7 @@ import graphviz
 import gct.utils as utils
 from gct.parse import extract
 import time
-from gct.constants import TEMP_FOLDER
-import subprocess
+from gct.constants import TEMP_FOLDER, GRAPH_FOLDER_DEFAULT_NAME
 
 
 def run(resource_name: str) -> list[graphviz.Digraph, str]:
@@ -85,11 +84,17 @@ def render(
     2. file_path: str = file path to save the output to. If None, the svg output (str) will be returned.
     3. output_format: str = Output format. Defaults to svg. Other formats include "png", "pdf".
     """
-    if file_path is None:
-        result = subprocess.run(
-            ["dot", "-Tsvg"], input=graph.source, capture_output=True, text=True
-        )
-        return result.stdout
+    updated_file_path = (
+        f"{TEMP_FOLDER}/{GRAPH_FOLDER_DEFAULT_NAME}" if file_path is None else file_path
+    )
 
-    graph.render(file_path, format=output_format)
+    graph.render(updated_file_path, format=output_format)
+
+    if file_path is None:
+        # Read the svg file and return it as a string
+        with open(f"{updated_file_path}.{output_format}", "r") as f:
+            result = f.read()
+            utils.flush(f"{TEMP_FOLDER}/")
+            return result
+
     return ""
