@@ -1,2 +1,2 @@
-arparse==1.1
+arparse==1.4.0
 graphviz==0.20.1
