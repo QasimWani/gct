@@ -83,18 +83,26 @@ def search_for_definition(tree: ast, name: str) -> list:
 
     if not result:
         return potential_target_nodes
+    try:
+        if isinstance(result.value, ast.Call):
+            if isinstance(result.value.func, ast.Attribute):
+                potential_target_nodes.append(result.value.func.attr)
+            else:
+                if isinstance(result.value.func, ast.Name):
+                    potential_target_nodes.append(result.value.func.id)
+                elif isinstance(
+                    result.value.func, ast.Subscript
+                ):  # BUG: this is a hacky fix for the case where the function is a subscript
+                    potential_target_nodes.append(result.value.func.value.id)
+        elif isinstance(result.value, ast.Tuple):
+            for node in result.value.elts:
+                if isinstance(node, ast.Call):
+                    potential_target_nodes.append(node.func.id)
+                elif isinstance(node, ast.Name):
+                    potential_target_nodes.append(node.id)
+    except Exception as e:
+        print(f"Error: {e}")
 
-    if isinstance(result.value, ast.Call):
-        if isinstance(result.value.func, ast.Attribute):
-            potential_target_nodes.append(result.value.func.attr)
-        else:
-            potential_target_nodes.append(result.value.func.id)
-    elif isinstance(result.value, ast.Tuple):
-        for node in result.value.elts:
-            if isinstance(node, ast.Call):
-                potential_target_nodes.append(node.func.id)
-            elif isinstance(node, ast.Name):
-                potential_target_nodes.append(node.id)
     return potential_target_nodes
 
 
