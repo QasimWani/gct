@@ -171,8 +171,8 @@ def get_immediate_parent(lines: list[str], lineno: int, call_node_name: str = No
                 function_of_interest, call_node_name
             ):
                 return i
-    if ind_num == 0:
-        return -1
+        if ind_num == 0 and not line.strip().startswith(")"):  # root node
+            return -1
 
     raise ValueError(f"No parent found. source line: {lineno}")
 
