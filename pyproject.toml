@@ -1,0 +1,29 @@
+[build-system]
+requires = [
+  "setuptools>=61.0",
+  "argparse==1.4.0",
+  "graphviz==0.20.1",
+  "networkx==2.6.3"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gct-py"
+version = "0.1.1"
+authors = [
+  { name="Qasim Wani", email="qasim@vt.edu" },
+]
+description = "Visualize Python code at lightning speed"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+[tool.poetry.scripts]
+gct = "gct.__main__:main"
+
+[project.urls]
+"Homepage" = "https://gctpy.com"
+"Bug Tracker" = "https://github.com/QasimWani/gct/issues"

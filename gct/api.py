@@ -85,7 +85,9 @@ def render(
     3. output_format: str = Output format. Defaults to svg. Other formats include "png", "pdf".
     """
     updated_file_path = (
-        f"{TEMP_FOLDER}/{GRAPH_FOLDER_DEFAULT_NAME}" if file_path is None else file_path
+        f"{TEMP_FOLDER}/{GRAPH_FOLDER_DEFAULT_NAME}"
+        if file_path is None
+        else file_path
     )
 
     graph.render(updated_file_path, format=output_format, view=file_path is not None)

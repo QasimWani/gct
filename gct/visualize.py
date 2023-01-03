@@ -7,7 +7,7 @@ sys.path.append("../gct")
 
 import gct.api as api
 import argparse
-from constants import TEMP_FOLDER, GRAPH_FOLDER_DEFAULT_NAME
+from gct.constants import TEMP_FOLDER, GRAPH_FOLDER_DEFAULT_NAME
 
 
 parser = argparse.ArgumentParser()
