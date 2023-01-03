@@ -10,9 +10,9 @@ class Metadata(
     )
 ):
     tree: ast
-    raw_code: list[str]
+    raw_code: "list[str]"
     node_graph: Graph
-    node_line_map: dict[int, Node]
+    node_line_map: "dict[int, Node]"
     parent_lineno: int  # Line number where function of interest is defined
 
 
@@ -106,7 +106,7 @@ def search_for_definition(tree: ast, name: str) -> list:
     return potential_target_nodes
 
 
-def get_prefix_and_suffix(name: str) -> tuple[str, str]:
+def get_prefix_and_suffix(name: str) -> "tuple[str, str]":
     """
     Given a function name, return the prefix and suffix.
     E.g.:
@@ -154,8 +154,8 @@ def infer_complex_mappings(prefix: str, suffix: str, metadata: Metadata):
     """
     tree: ast = metadata.tree
     node_graph: Graph = metadata.node_graph
-    node_line_map: dict[int, Node] = metadata.node_line_map
-    potential_target_nodes: list[Node] = []
+    node_line_map: "dict[int, Node]" = metadata.node_line_map
+    potential_target_nodes: "list[Node]" = []
 
     # Case I: prefix is a class/method name
     prefix_target_nodes = find_nodes_by_name(prefix, node_line_map.values())
@@ -181,7 +181,7 @@ def infer_complex_mappings(prefix: str, suffix: str, metadata: Metadata):
     return potential_target_nodes
 
 
-def find_nodes_by_name(target_node_name: str, nodes: list[Node]) -> list[Node]:
+def find_nodes_by_name(target_node_name: str, nodes: "list[Node]") -> "list[Node]":
     """
     Find all nodes with the given name.
     @Parameters:
@@ -189,14 +189,14 @@ def find_nodes_by_name(target_node_name: str, nodes: list[Node]) -> list[Node]:
     2. nodes: list[Node] = list of nodes to search through.
     @Returns: list of nodes with the given `target_node_name`.
     """
-    potential_target_nodes: list[Node] = []
+    potential_target_nodes: "list[Node]" = []
     for node in nodes:
         if node.name == target_node_name:
             potential_target_nodes.append(node)
     return potential_target_nodes
 
 
-def infer_direct_mappings(node_line_map: dict[int, Node], name: str) -> list[Node]:
+def infer_direct_mappings(node_line_map: "dict[int, Node]", name: str) -> "list[Node]":
     """
     Handles the case where the function of interest is a direct mapping to a node.
     E.g.:

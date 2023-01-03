@@ -36,7 +36,8 @@ class UserDefinedFuncVisitor(ast.NodeVisitor):
         self.node: Node = None
 
     def create_node(self, node: ast.AST, node_name: str, type: str):
-        self.node = Node(node.lineno - 1, node.end_lineno - 1, node_name, type)
+        end_lineno = node.lineno - 1 if "end_lineno" in dir(node) else str(None)
+        self.node = Node(node.lineno - 1, end_lineno, node_name, type)
 
     def visit_Lambda(self, node: ast.Lambda):
         raise NotImplementedError("Lambda functions are not supported yet")

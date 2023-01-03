@@ -32,7 +32,7 @@ class Graph:
     def add_edge(self, node1: Node, node2: Node):
         self.G.add_edge(node1, node2)
 
-    def get_all_nodes(self) -> list[Node]:
+    def get_all_nodes(self) -> "list[Node]":
         return list(self.G.nodes)
 
     def get_root_node(self) -> Node:
@@ -53,7 +53,7 @@ class Graph:
         except:
             return None  # root node
 
-    def get_children_nodes(self, node: Node) -> list[Node]:
+    def get_children_nodes(self, node: Node) -> "list[Node]":
         return list(self.G.successors(node))
 
     def group_nodes_by_level(self):
@@ -109,7 +109,7 @@ class Graph:
 
         for parent_node, children_nodes in self._level_clustering.items():
             parent_node: Node = parent_node
-            children_nodes: list[Node] = children_nodes
+            children_nodes: "list[Node]" = children_nodes
 
             print(f"--- {parent_node} ---")
             for child_node in children_nodes:

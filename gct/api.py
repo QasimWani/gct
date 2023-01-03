@@ -34,7 +34,7 @@ import time
 from gct.constants import TEMP_FOLDER, GRAPH_FOLDER_DEFAULT_NAME
 
 
-def run(resource_name: str) -> list[graphviz.Digraph, str]:
+def run(resource_name: str) -> "list[graphviz.Digraph, str]":
     """
     Runs GCT on a given resource and returns the graphviz object.
     @Parameter:

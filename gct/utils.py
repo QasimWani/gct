@@ -64,7 +64,7 @@ def get_indent_number(line: str):
     return len(line) - len(line.lstrip())
 
 
-def get_end_of_function(lines: list[str], lineno: int):
+def get_end_of_function(lines: "list[str]", lineno: int):
     """
     Fetches the end of a function definition by comparing indentation number of the
     first line with the indentation of potential end function.
@@ -85,12 +85,14 @@ def get_end_of_function(lines: list[str], lineno: int):
     return len(lines) - 1
 
 
-def fetch_full_function(lines: list[str], start_lineno: int) -> list[str]:
+def fetch_full_function(lines: "list[str]", start_lineno: int) -> "list[str]":
     end_lineno = get_end_of_function(lines, start_lineno)
     return lines[start_lineno : end_lineno + 1]
 
 
-def is_call_node_in_function_of_interest(lines: list[str], call_node_name: str) -> bool:
+def is_call_node_in_function_of_interest(
+    lines: "list[str]", call_node_name: str
+) -> bool:
     if not call_node_name:
         # used in node connection logic. In this case, since we only consider
         # function calls, we don't need to check if call_node_name is defined
@@ -113,7 +115,7 @@ def is_line_function_or_class(line: str):
     return False
 
 
-def get_immediate_parent(lines: list[str], lineno: int, call_node_name: str = None):
+def get_immediate_parent(lines: "list[str]", lineno: int, call_node_name: str = None):
     """
     Given a function, fx, find the most immediate parent node.
     In this case, most immediate parent node is the first instance where
@@ -177,7 +179,7 @@ def get_immediate_parent(lines: list[str], lineno: int, call_node_name: str = No
     raise ValueError(f"No parent found. source line: {lineno}")
 
 
-def find_function_of_interest(name: str, metadata: type_check.Metadata) -> list[Node]:
+def find_function_of_interest(name: str, metadata: type_check.Metadata) -> "list[Node]":
     """
     Given a function name, find the function of interest in the node_line_map.
     Ignoring class definition calls for now.
@@ -189,7 +191,7 @@ def find_function_of_interest(name: str, metadata: type_check.Metadata) -> list[
     """
     prefix, suffix = type_check.get_prefix_and_suffix(name)
 
-    potential_target_nodes: list[Node] = []
+    potential_target_nodes: "list[Node]" = []
 
     if prefix:
         if prefix == constants.SELF_NODE_NAME:

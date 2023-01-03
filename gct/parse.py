@@ -6,10 +6,10 @@ import gct.constants as constants
 from gct.type_check import Metadata
 
 
-def extract(tree: ast, raw_code: list[str]):
+def extract(tree: ast, raw_code: "list[str]"):
     """2 pass algorithm"""
 
-    node_line_map: dict[int, Node] = {
+    node_line_map: "dict[int, Node]" = {
         constants.ROOT_NODE: Node(constants.ROOT_NODE_LINENO, len(raw_code), "root")
     }
     node_creation_graph = Graph()
