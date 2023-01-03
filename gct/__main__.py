@@ -35,6 +35,7 @@ parser.add_argument(
     version=f"gct {__version__}",
 )
 
+
 def main():
     args = parser.parse_args()
 
@@ -51,6 +52,7 @@ def main():
         file_path=f"{args.destination_folder}/{GRAPH_FOLDER_DEFAULT_NAME}",
         output_format="pdf",
     )
+
 
 if __name__ == "__main__":
     main()

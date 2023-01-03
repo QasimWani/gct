@@ -2,7 +2,7 @@
 # gct/__init__.py
 
 __app_name__ = "gct"
-__version__ = "0.1.1"
+__version__ = "0.1.4"
 
 (
     SUCCESS,
@@ -21,3 +21,9 @@ ERRORS = {
     DB_WRITE_ERROR: "database write error",
     ID_ERROR: "to-do id error",
 }
+
+
+# Make sure that all python packages are installed
+from .package_config import installer
+
+installer()
