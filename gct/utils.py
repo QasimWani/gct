@@ -7,7 +7,6 @@ import graphviz
 import os
 import shutil
 import requests
-import re
 
 
 def generate_random_color():
