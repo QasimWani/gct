@@ -88,7 +88,7 @@ def render(
         f"{TEMP_FOLDER}/{GRAPH_FOLDER_DEFAULT_NAME}" if file_path is None else file_path
     )
 
-    graph.render(updated_file_path, format=output_format)
+    graph.render(updated_file_path, format=output_format, view=file_path is not None)
 
     if file_path is None:
         # Read the svg file and return it as a string

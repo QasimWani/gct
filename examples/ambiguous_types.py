@@ -55,7 +55,7 @@ def call_utility():
 
 
 def call_all_functions():
-    Preferences().func()
-    Utility().func()
+    Preferences.func()
+    Utility.func()
     Meta.func()
     func()

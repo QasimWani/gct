@@ -44,7 +44,7 @@ def extract(tree: ast, raw_code: list[str]):
             # 3. connect (1) to (2) via `Edge`
 
             line_start_source_function = utils.get_immediate_parent(
-                raw_code, node.lineno - 1
+                raw_code, node.lineno - 1, call_visitor.name
             )
 
             source_node: Node = None

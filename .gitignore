@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ignore temp folder
+temp/
+
+# Ignore .vscode
+.vscode/
