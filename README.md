@@ -29,11 +29,6 @@ Within **seconds** it can tell you how your functions and classes are connected 
 <img width="500" style="border-radius: 50%;" alt="image" src="https://user-images.githubusercontent.com/43754306/210659872-98e5b8c7-9425-4479-a473-1cce6ccfbd00.png">
 </a>
 
-<br>
-<br>
-
-
-  
   
 [GCT web app](https://gctpy.com) •
 [Getting started](#getting-started) •
@@ -50,7 +45,6 @@ Within **seconds** it can tell you how your functions and classes are connected 
 2. Debug code faster [Twitter thread](https://twitter.com/qasim31wani/status/1609677492347981825)
 3. Create share-able versions of your code. Using gctpy.com, you can instantly share your UML diagrams across teams.
 
-<br>
 
 ### Some examples you can run GCT on:
 
@@ -64,18 +58,14 @@ Within **seconds** it can tell you how your functions and classes are connected 
 
 Generate graph for any python file
 ```sh
-python -m gct -i path/to/file.py
-```
-
-Generate graph for any python file hosted on a web server
-```sh
-python -m gct -i https://github.com/user_name/path/to/file.py
+python -m gct -i path/to/file.py # run gct on a local file
+python -m gct -i https://github.com/user_name/path/to/file.py # run gct on a file hosted on a web server
 ```
 
 
 ## Installation
 
-### *Step 1: Install GCT*
+### *Step 1: Install GCT Python package*
 
 ```
 pip install gct-py
