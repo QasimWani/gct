@@ -25,8 +25,15 @@ Graphical Code Tracer (gct) is the world's first visual static code analyzer.
 
 Within **seconds** it can tell you how your functions and classes are connected to each other!
 
-  
+<a href="https://gctpy.com/graph/d7b78eade68aea0db04cc4b0e170e3bb50ab1fdd5dfead522dfa596babf534cf">
+<img width="500" style="border-radius: 50%;" alt="image" src="https://user-images.githubusercontent.com/43754306/210659872-98e5b8c7-9425-4479-a473-1cce6ccfbd00.png">
+</a>
+
 <br>
+<br>
+
+
+  
   
 [GCT web app](https://gctpy.com) •
 [Getting started](#getting-started) •
@@ -37,7 +44,15 @@ Within **seconds** it can tell you how your functions and classes are connected 
 
 ## Getting started
 
-Some examples you can run GCT on:
+
+### Usecases:
+1. Onboard to new codebases faster.
+2. Debug code faster [Twitter thread](https://twitter.com/qasim31wani/status/1609677492347981825)
+3. Create share-able versions of your code. Using gctpy.com, you can instantly share your UML diagrams across teams.
+
+<br>
+
+### Some examples you can run GCT on:
 
 [Simple python file](https://gctpy.com/graph/5888f26bdbc0661b7a060552f518e1d129b83b6a303c317ee7aa72524cdbd3c8) •
 [karpathy/MinGPT](https://gctpy.com/graph/633f83124187744cc37e50c156c4057408a1832422217f84b8837a2aa21a4489) •
