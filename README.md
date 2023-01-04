@@ -38,7 +38,7 @@ Within **seconds** it can tell you how your functions and classes are connected 
 [GCT web app](https://gctpy.com) •
 [Getting started](#getting-started) •
 [Installation](#installation) •
-[Configuration](#configuration) •
+[Configuration](#configuration)
 
 </div>
 
