@@ -2,7 +2,7 @@
 # gct/__init__.py
 
 __app_name__ = "gct"
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 (
     SUCCESS,

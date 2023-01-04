@@ -32,7 +32,7 @@ parser.add_argument(
     "--version",
     "-v",
     action="version",
-    version=f"gct {__version__}",
+    version=f"GCT version: {__version__}",
 )
 
 

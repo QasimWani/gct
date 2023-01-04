@@ -25,12 +25,14 @@ def _is_graphviz_installed():
         version = (
             data.decode("utf-8").split("graphviz version ")[1].split(" ")[0].strip()
         )
-        assert version >= "6.0.1", version
+        if version.startswith("2."):
+            print(
+                "Warning: GCT does not generate graph clusters on graphviz version 2.x.x. If possible, please upgrade graphviz to version 6.0.1 or higher. Your version is ",
+                version,
+                "\n",
+                "Run 'dot -V' to check your version.",
+            )
         return True
-
-    except AssertionError as e:
-        message = f"Found graphviz dot version {e}. Dot version >= 6.0.1 is required. See instructions for graphviz: {GRAPHVIZ_INSTRUCTIONS_LINK}"
-        raise Exception(message)
 
     except Exception as e:
         print("Graphviz not installed. See instructions for graphviz:", e)
