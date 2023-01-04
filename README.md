@@ -186,7 +186,7 @@ information, try out the easy-to-use web app: [gctpy.com](https://gctpy.com).
 Customize the experience by aliasing `gct`:
 ```
 alias gct=python -m gct -i'
-gct -i path/to/file.py
+gct path/to/file.py
 ```
 
 
