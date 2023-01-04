@@ -155,7 +155,7 @@ information, try out the easy-to-use web app: [gctpy.com](https://gctpy.com).
   sudo rm -rf /Applications/graphviz.app
   ```
   
-  Install graphviz package using [instructions](#step-2-install-graphviz-executable-skip-if-its-already-installed) shared above.
+  Install graphviz package using [instructions](#step-2-skip-if-already-installed-install-graphviz-executable) shared above.
 </details>
 
 <details>
