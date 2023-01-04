@@ -72,7 +72,7 @@ pip install gct-py
 ```
 
 
-### *Step 2: Install Graphviz executable (skip if it's already installed)*
+### *Step 2: (Skip if already installed) Install Graphviz executable*
 
 GCT generates graphs using [graphviz](https://graphviz.org). To get accurate graphs, we highly
 recommend using graphviz>=6.0.1.
@@ -114,7 +114,7 @@ information, try out the easy-to-use web app: [gctpy.com](https://gctpy.com).
 </details>
 
 
-### *Step 3: (optional) Upgrade graphviz executable version*
+### *Step 3: (Optional) Upgrade graphviz executable version*
 
 
 <details>
