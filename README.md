@@ -75,7 +75,7 @@ pip install gct-py
 ### *Step 2: (Skip if already installed) Install Graphviz executable*
 
 GCT generates graphs using [graphviz](https://graphviz.org). To get accurate graphs, we highly
-recommend using graphviz>=6.0.1.
+recommend using latest graphviz version available for your OS.
 
 If you've already installed graphviz executable version, check the dot version by running: `dot -V`.
 
@@ -102,81 +102,9 @@ If you've already installed graphviz executable version, check the dot version b
 
   (optional) more details: [graphviz](https://graphviz.org/download/#linux).
   
-Install graphviz by downloading version >=6.0.1 from [graphviz](https://graphviz.org/download/#linux) website.
-Unfortunately, graphviz is only updated to 2.4 on Linux systems. We've seen inconsistencies from the GCT outputs when
-using this version, particularly in clustering python classes together. You can still run it, however, for more accurate
-information, try out the easy-to-use web app: [gctpy.com](https://gctpy.com).
-  
 ```
   sudo apt install graphviz
 ```
-  
-</details>
-
-
-### *Step 3: (Optional) Upgrade graphviz executable version*
-
-
-<details>
-  <summary>MacOS</summary>
-  
-  Find dot path:
-  ```
-  where dot
-  ```
-  Remove dot executable:
-  ```
-  sudo rm -rf "path/to/dot/executable"
-  ```
-  Uninstall graphviz package:
-  ```
-  brew uninstall graphviz
-  ```
-  Install graphviz package:
-  ```
-  brew install graphviz
-  ```
-  
-</details>
-
-<details>
-  <summary>Windows</summary>
-  
-  Find dot path:
-  ```
-  where dot
-  ```
-  Remove dot executable:
-  ```
-  del "/path/to/dot/executable"
-  ```
-  Uninstall graphviz package:
-  ```
-  sudo rm -rf /Applications/graphviz.app
-  ```
-  
-  Install graphviz package using [instructions](#step-2-skip-if-already-installed-install-graphviz-executable) shared above.
-</details>
-
-<details>
-  <summary>Linux</summary>
-  
-  Find dot path:
-  ```
-  which dot
-  ```
-  Remove dot executable:
-  ```
-  sudo rm -rf "path/to/dot/executable"
-  ```
-  Uninstall graphviz package:
-  ```
-  sudo apt-get remove graphviz
-  ```
-  Install graphviz package:
-  ```
-  sudo apt install graphviz
-  ```
   
 </details>
   
