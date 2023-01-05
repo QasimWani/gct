@@ -1,9 +1,7 @@
 import platform
 import subprocess
 
-GRAPHVIZ_INSTRUCTIONS_LINK = (
-    "https://github.com/QasimWani/gct/blob/main/README.md#installing-graphviz"
-)
+GRAPHVIZ_INSTRUCTIONS_LINK = "https://github.com/QasimWani/gct/blob/main/README.md#step-2-skip-if-already-installed-install-graphviz-executable"
 GCT_ISSUE_LINK = "https://github.com/QasimWani/gct/issues/new"
 
 
@@ -15,32 +13,16 @@ def _install_pip_package(package: str):
 
 
 def _is_graphviz_installed():
-    """Function that checks if graphviz is installed and if so, is dot version >= 6.0.1"""
+    """Function that checks if graphviz is installed"""
     try:
-        output = subprocess.Popen(
-            ["dot", "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        data = output.stderr.read()
-
-        version = (
-            data.decode("utf-8").split("graphviz version ")[1].split(" ")[0].strip()
-        )
-        if version.startswith("2."):
-            print(
-                "Warning: GCT does not generate graph clusters on graphviz version 2.x.x. If possible, please upgrade graphviz to version 6.0.1 or higher. Your version is ",
-                version,
-                "\n",
-                "Run 'dot -V' to check your version.",
-            )
+        subprocess.Popen(["dot", "-V"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         return True
-
     except Exception as e:
         print("Graphviz not installed. See instructions for graphviz:", e)
     return False
 
 
 def _is_dot_installed():
-    # Check for correct version of graphviz, if installed.
     if _is_graphviz_installed():
         return
 
