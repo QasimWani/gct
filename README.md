@@ -112,7 +112,7 @@ If you've already installed graphviz executable version, check the dot version b
 
 Customize the experience by aliasing `gct`:
 ```
-alias gct=python -m gct -i'
+alias gct='python -m gct -i'
 gct path/to/file.py
 ```
 
