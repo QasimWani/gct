@@ -25,9 +25,8 @@ Graphical Code Tracer (gct) is the world's first visual static code analyzer.
 
 Within **seconds** it can tell you how your functions and classes are connected to each other!
 
-<a href="https://gctpy.com/graph/d7b78eade68aea0db04cc4b0e170e3bb50ab1fdd5dfead522dfa596babf534cf">
-<img width="500" style="border-radius: 50%;" alt="image" src="https://user-images.githubusercontent.com/43754306/210659872-98e5b8c7-9425-4479-a473-1cce6ccfbd00.png">
-</a>
+![](/demo.gif)
+
 
   
 [GCT web app](https://gctpy.com) •
