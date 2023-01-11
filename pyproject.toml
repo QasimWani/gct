@@ -3,7 +3,8 @@ requires = [
   "setuptools>=61.0",
   "argparse==1.4.0",
   "graphviz==0.20.1",
-  "networkx"
+  "networkx",
+  "requests"
 ]
 
 build-backend = "setuptools.build_meta"
