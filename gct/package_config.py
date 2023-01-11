@@ -40,7 +40,7 @@ def _is_dot_installed():
 
 # Install python packages and graphviz dist. if they don't exist.
 def installer():
-    PACKAGES = ["argparse", "graphviz", "networkx", "platform"]
+    PACKAGES = ["argparse", "graphviz", "networkx", "platform", "requests"]
     for package in PACKAGES:
         _install_pip_package(package)
 
