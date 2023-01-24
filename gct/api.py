@@ -34,7 +34,7 @@ import time
 from gct.constants import TEMP_FOLDER, GRAPH_FOLDER_DEFAULT_NAME
 
 
-def run(resource_name: str) -> "list[graphviz.Digraph, str]":
+def run(resource_name: str, summarize: bool) -> "list[graphviz.Digraph, str]":
     """
     Runs GCT on a given resource and returns the graphviz object.
     @Parameter:
@@ -51,7 +51,7 @@ def run(resource_name: str) -> "list[graphviz.Digraph, str]":
     # Get the AST and raw code
     tree, raw_code = utils.parse_file(resource_name)
     # Extract relevant components -- node connection and edge mapping
-    node_representation, edge_representation = extract(tree, raw_code)
+    node_representation, edge_representation = extract(tree, raw_code, summarize)
     # Heirarchical clustering
     node_representation.group_nodes_by_level()
     # Define graphviz graph

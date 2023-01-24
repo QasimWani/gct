@@ -2,3 +2,4 @@ argparse==1.4.0
 graphviz==0.20.1
 networkx==2.8.8
 platform==1.0.8
+openai

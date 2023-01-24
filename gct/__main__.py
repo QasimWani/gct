@@ -35,6 +35,13 @@ parser.add_argument(
     version=f"GCT version: {__version__}",
 )
 
+parser.add_argument(
+    "--summarize",
+    "-s",
+    action="store_true",
+    help="Use GPT-3 to summarize functions (requires API key)"
+)
+
 
 def main():
     args = parser.parse_args()
@@ -45,7 +52,7 @@ def main():
     if not status["valid"]:
         path = args.input
 
-    graph, _ = api.run(path)
+    graph, _ = api.run(path, summarize=args.summarize)
 
     api.render(
         graph,

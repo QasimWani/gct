@@ -257,6 +257,9 @@ def add_subgraphs(
                 style = "rounded, filled"
                 shape = "box"
                 bgcolor = generate_random_color()
+        
+            if node.description is not None:
+                text = f"<{node.__repr__()} <BR/> <FONT POINT-SIZE=\"8\">{node.description}</FONT>>"
 
             graphviz_graph.node(
                 node.id,
