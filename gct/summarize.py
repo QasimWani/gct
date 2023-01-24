@@ -1,6 +1,7 @@
 import openai
 import os
 from gct.constants import PROMPT
+import textwrap
 
 class CodeSummarizer:
     def __init__(self, decription_max_len: int = 50, temperature: float = 0.8):
@@ -13,7 +14,8 @@ class CodeSummarizer:
 
     def summarize(self, code: "list[str]") -> str:
         prompt = self._populate_prompt(code)
-        return self._text_completion(prompt)
+        description = self._text_completion(prompt)
+        return "<BR />".join(textwrap.wrap(description, 42))
 
             
     def _text_completion(self, prompt: str) -> str:
