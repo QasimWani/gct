@@ -57,7 +57,7 @@ def main():
     api.render(
         graph,
         file_path=f"{args.destination_folder}/{GRAPH_FOLDER_DEFAULT_NAME}",
-        output_format="pdf",
+        output_format="svg"
     )
 
 
