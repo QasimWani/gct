@@ -6,11 +6,11 @@ import gct.constants as constants
 from gct.type_check import Metadata
 
 
-def extract(tree: ast, raw_code: "list[str]"):
+def extract(tree: ast, raw_code: "list[str]", summarize: bool):
     """2 pass algorithm"""
 
     node_line_map: "dict[int, Node]" = {
-        constants.ROOT_NODE: Node(constants.ROOT_NODE_LINENO, len(raw_code), "root")
+        constants.ROOT_NODE: Node(constants.ROOT_NODE_LINENO, len(raw_code), raw_code, "root")
     }
     node_creation_graph = Graph()
     edge_creation_graph = Graph()
@@ -18,7 +18,7 @@ def extract(tree: ast, raw_code: "list[str]"):
     # Node creation
     for node in ast.walk(tree):
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            func_visitor = UserDefinedFuncVisitor()
+            func_visitor = UserDefinedFuncVisitor(raw_code, summarize)
             func_visitor.visit(node)
             node_line_map[func_visitor.node.line_start] = func_visitor.node
 
