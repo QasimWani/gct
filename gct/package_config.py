@@ -27,6 +27,7 @@ def _is_dot_installed():
         return
 
     system = platform.system()
+    # TODO: refactor
     if system == "Windows":
         message = "Graphviz package not install. Try running 'choco install -y graphviz'. \n If the error persists, install graphviz from here: https://graphviz.org/download"
     elif system == "Darwin":  # macOS

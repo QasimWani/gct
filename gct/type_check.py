@@ -17,6 +17,7 @@ class Metadata(
 
 
 def helper_search_definition(tree, variable_name):
+    # TODO: handle case where variable is redefined
     """
     Recursive function to search for the definition of a variable in an AST.
     Note: This only searches the latest definition of a variable since Python is dynamically typed.
@@ -42,6 +43,10 @@ def helper_search_definition(tree, variable_name):
     ```
     In this case, var is defined in the `Assign` node with two targets. This is stored as an ast.Tuple node.
     So we must traverse through all the elements in the tuple to find the definition corresponding to `var`.
+    @Parameters:
+    1. tree: ast = AST to search through.
+    2. variable_name: str = name of variable to search for.
+    @Returns: the node of the definition if the correct Assign node is found, otherwise None.
     """
 
     # Iterate through the nodes in the AST
@@ -73,7 +78,7 @@ def search_for_definition(tree: ast, name: str) -> list:
     @Parameters:
     1. tree: ast = AST of the file.
     2. name: str = name of variable to search for.
-    @Returns: list of potential targets for the variable. If empty, no target has been found.
+    @Returns: list of potential targets node ids for the variable. If empty, no target has been found.
     """
     if name in NODE_NAMES_TO_IGNORE:
         return []
@@ -107,6 +112,7 @@ def search_for_definition(tree: ast, name: str) -> list:
 
 
 def get_prefix_and_suffix(name: str) -> "tuple[str, str]":
+    # TODO: handle case where prefix is a module name and subclasses
     """
     Given a function name, return the prefix and suffix.
     E.g.:
@@ -128,6 +134,7 @@ def get_prefix_and_suffix(name: str) -> "tuple[str, str]":
     suffix = name
 
     if "." in name:
+        # TODO: Refactor this
         splits = name.split(".")
         if len(splits) == 2:
             prefix, suffix = splits
@@ -156,6 +163,7 @@ def infer_complex_mappings(prefix: str, suffix: str, metadata: Metadata):
     node_graph: Graph = metadata.node_graph
     node_line_map: "dict[int, Node]" = metadata.node_line_map
     potential_target_nodes: "list[Node]" = []
+
 
     # Case I: prefix is a class/method name
     prefix_target_nodes = find_nodes_by_name(prefix, node_line_map.values())

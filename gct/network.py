@@ -17,6 +17,7 @@ class Node:
         self.id = uuid.uuid1().hex
 
     def __repr__(self) -> str:
+        # TODO: Replace with return f"{self.name}({self.line_start}, {self.line_end}, {self.type})"
         return f"{self.name} #{self.line_start + 1}"
 
 
@@ -42,11 +43,10 @@ class Graph:
 
     def get_parent_node(self, node: Node) -> Node:
         """
-        > Given a node, return the parent node
-
-        :param node: The node to get the parent of
-        :type node: Node
-        :return: The parent node of the node passed in.
+        Given a node, return the parent node
+        @Parameters:
+        1. node: Node = node to get the parent of.
+        @Returns: The parent node of the node passed in else None.
         """
         try:
             return list(self.G.predecessors(node))[0]
@@ -57,11 +57,16 @@ class Graph:
         return list(self.G.successors(node))
 
     def group_nodes_by_level(self):
+        """
+        Groups all nodes by level.
+        @Returns: Dictionary where the key is the parent node and value is all the children nodes.
+        """
         if self._level_clustering:
             return
 
         for node in self.get_all_nodes():
-            parent_node = self.get_parent_node(node)
+            parent_node = self.get_parent_node(node) 
+            # Nodes with no children (i.e. function not called) are not included in the graph.
             if parent_node is None:
                 continue
             self._level_clustering[parent_node] = self.get_children_nodes(parent_node)
