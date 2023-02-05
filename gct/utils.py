@@ -65,7 +65,7 @@ def parse_file(resource: str):
     @Returns: the AST and lines of the code.
     """
 
-    if resource.startswith("http"): # TODO: Check for http insead of https
+    if resource.startswith("https"):
         response = requests.get(resource)
         tree = ast.parse(response.text, filename=resource)
         return tree, response.text.splitlines()
