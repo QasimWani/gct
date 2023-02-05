@@ -89,18 +89,17 @@ def get_indent_number(line: str):
     return len(line) - len(line.lstrip())
 
 
-# TODO: change lineno to start_lineno
-def get_end_of_function(lines: "list[str]", lineno: int):
+def get_end_of_function(lines: "list[str]", start_lineno: int):
     """
     Fetches the end of a function definition by comparing indentation number of the
     first line with the indentation of potential end function.
     @Parameters:
     1. lines: list[str] = array of lines of code.
-    2. lineno: int = line number (0-based indexing) where function of interest starts from.
+    2. start_lineno: int = line number (0-based indexing) where function of interest starts from.
     @Returns: line number where the function ends.
     """
-    start_indent = get_indent_number(lines[lineno])
-    for i in range(lineno + 1, len(lines)):
+    start_indent = get_indent_number(lines[start_lineno])
+    for i in range(start_lineno + 1, len(lines)):
         line = lines[i]
         """
         End of function occurs when indentation is decreased (i.e. code scope changed), 
