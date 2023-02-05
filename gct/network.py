@@ -17,7 +17,6 @@ class Node:
         self.id = uuid.uuid1().hex
 
     def __repr__(self) -> str:
-        # TODO: Replace with return f"{self.name}({self.line_start}, {self.line_end}, {self.type})"
         return f"{self.name} #{self.line_start + 1}"
 
 
@@ -90,23 +89,23 @@ class Graph:
         ```
         Running `print_graph_by_levels()` will print:
         ```
-        --- A(1, 8, class) ---
-            b(2, 5, function)
-            c(3, 5, function)
-            d(4, 5, function)
-            B(6, 8, class)
-        --- B(6, 8, class) ---
-            test(7, 8, function)
+        --- A #1 ---
+            b #2
+            c #3
+            d #4
+            B #6
+        --- B #6 ---
+            test #7
         ```
         Note how the nodes are printed by breath-first search order & not depth-first.
         Ideally, the output should look something like this:
         ```
-        --- A(1, 8, class) ---
-            b(2, 5, function)
-            c(3, 5, function)
-            d(4, 5, function)
-            --- B(6, 8, class) ---
-                test(7, 8, function)
+        --- A #1 ---
+            b #2
+            c #3
+            d #4
+            --- B #6 ---
+                test #7
         ```
         But you can leverage information stored in `self._level_clustering` to do this.
         """
