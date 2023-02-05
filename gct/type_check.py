@@ -134,7 +134,6 @@ def get_prefix_and_suffix(name: str) -> "tuple[str, str]":
     suffix = name
 
     if "." in name:
-        # TODO: Refactor this
         splits = name.split(".")
         if len(splits) == 2:
             prefix, suffix = splits
