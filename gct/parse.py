@@ -7,7 +7,13 @@ from gct.type_check import Metadata
 
 
 def extract(tree: ast, raw_code: "list[str]"):
-    """2 pass algorithm"""
+    """
+    2 pass algorithm to generate a graph of nodes and edges connecting the parent with child and potential child nodes.
+    @Parameters:
+    1. tree: ast = AST to be traversed.
+    2. raw_code: list[str] = array of lines of relevant code.
+    @Returns: None.
+    """
 
     node_line_map: "dict[int, Node]" = {
         constants.ROOT_NODE: Node(constants.ROOT_NODE_LINENO, len(raw_code), "root")

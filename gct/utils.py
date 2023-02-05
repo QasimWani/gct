@@ -15,6 +15,13 @@ def generate_random_color():
 
 
 def save_code_to_file(code: str, resource: str):
+    """
+    Save code to a file path.
+    @Parameters:
+    1. code: str = code to be written to the file.
+    2. resource: str = file path to write the code.
+    @Returns: None.
+    """
     if "/" in resource:
         resource = resource.split("/")[-1]
     if not resource.endswith(".py"):
@@ -24,6 +31,14 @@ def save_code_to_file(code: str, resource: str):
 
 
 def flush(path: str):
+    """
+    If the directory doesn't exist, create it. Otherwise remove
+    all files and directories in the existing directory. If an
+    error occurs, print the file path and error message.
+    @Parameters:
+    1. path: str = file path for the directory.
+    @Returns: None.
+    """
     # if folder doesn't exist, create it and exit. If it does exist, remove all files and create a new temp folder.
     if not os.path.exists(path):
         os.mkdir(path)
@@ -41,12 +56,16 @@ def flush(path: str):
 
 def parse_file(resource: str):
     """
-    A resource can either be:
-    1. URL - in which case we fetch the code and parse it.
-    2. Path to a file - in which case we read the file and parse it.
-    3. Raw code - in which case we parse it directly.
+    Generates an AST from a file or URL.
+    @Parameters:
+    1. resource: str = url, file path, or code string to be parsed.
+        - URL: in which case we fetch the code and parse it.
+        - Path to a file: in which case we read the file and parse it.
+        - Raw code: in which case we parse it directly.
+    @Returns: the AST and lines of the code.
     """
-    if resource.startswith("http"):
+
+    if resource.startswith("https"):
         response = requests.get(resource)
         tree = ast.parse(response.text, filename=resource)
         return tree, response.text.splitlines()
@@ -61,21 +80,31 @@ def parse_file(resource: str):
 
 
 def get_indent_number(line: str):
+    """
+    Gets the number of spaces per indent. Assumes that tabs are converted to spaces.
+    @Parameters:
+    1. line: str = line whose indent space count you want to get.
+    @Returns: count of the number of spaces per indent.
+    """
     return len(line) - len(line.lstrip())
 
 
-def get_end_of_function(lines: "list[str]", lineno: int):
+def get_end_of_function(lines: "list[str]", start_lineno: int):
     """
     Fetches the end of a function definition by comparing indentation number of the
     first line with the indentation of potential end function.
     @Parameters:
-    1. filename: str = file containing function.
-    2. lineno: int = line number (0-based indexing) where function of interest starts from.
+    1. lines: list[str] = array of lines of code.
+    2. start_lineno: int = line number (0-based indexing) where function of interest starts from.
     @Returns: line number where the function ends.
     """
-    start_indent = get_indent_number(lines[lineno])
-    for i in range(lineno + 1, len(lines)):
+    start_indent = get_indent_number(lines[start_lineno])
+    for i in range(start_lineno + 1, len(lines)):
         line = lines[i]
+        """
+        End of function occurs when indentation is decreased (i.e. code scope changed), 
+        line is not a newline, and line is not a part of a declaration (i.e. multiline tuple).
+        """ 
         if (
             get_indent_number(line) <= start_indent
             and line.strip()
@@ -86,6 +115,13 @@ def get_end_of_function(lines: "list[str]", lineno: int):
 
 
 def fetch_full_function(lines: "list[str]", start_lineno: int) -> "list[str]":
+    """
+    Gets array of all the lines of a specific function
+    @Parameters:
+    1. lines: list[str] = array of lines of code.
+    2. start_lineno: int = line number (0-based indexing) where function of interest starts from.
+    @Returns: line number where the function ends.
+    """
     end_lineno = get_end_of_function(lines, start_lineno)
     return lines[start_lineno : end_lineno + 1]
 
@@ -93,6 +129,13 @@ def fetch_full_function(lines: "list[str]", start_lineno: int) -> "list[str]":
 def is_call_node_in_function_of_interest(
     lines: "list[str]", call_node_name: str
 ) -> bool:
+    """
+    Check if node is called in a specific line of code.
+    @Parameters:
+    1. lines: list[str] = array of lines of code.
+    2. call_node_name: str = name of node to check for.
+    @Returns: True if node is found or call_node_name is None (i.e. node connection logic), else False.
+    """
     if not call_node_name:
         # used in node connection logic. In this case, since we only consider
         # function calls, we don't need to check if call_node_name is defined
@@ -110,6 +153,12 @@ def is_call_node_in_function_of_interest(
 
 
 def is_line_function_or_class(line: str):
+    """
+    Check if given line is a function or a class.
+    @Parameters:
+    1. line: str = line to be checked.
+    @Returns: True if the line is the start of a function or class definition.
+    """
     if line.lstrip().split(" ")[0] == "def" or line.lstrip().split(" ")[0] == "class":
         return True
     return False
@@ -117,7 +166,7 @@ def is_line_function_or_class(line: str):
 
 def get_immediate_parent(lines: "list[str]", lineno: int, call_node_name: str = None):
     """
-    Given a function, fx, find the most immediate parent node.
+    Given a function, fx, find the index of the most immediate parent node containing the specified node.
     In this case, most immediate parent node is the first instance where
     the indentation number is lesser than fx.
     E.g.:
@@ -148,7 +197,7 @@ def get_immediate_parent(lines: "list[str]", lineno: int, call_node_name: str = 
     1. lines: list[str] = relevant lines of code.
     2. lineno:int = line number (0-based indexing) where function of interests starts from.
     3. call_node_name: str = name of function of interest.
-    @Returns: line number of immediate parent node.
+    @Returns: line number of immediate parent node with specified node else -1. If no parent found, raise ValueError.
     """
     assert lineno < len(lines), "lineno out of range"
 
@@ -185,8 +234,8 @@ def find_function_of_interest(name: str, metadata: type_check.Metadata) -> "list
     Ignoring class definition calls for now.
 
     @Parameters:
-    1. node_line_map: dict[int, Node] = maps line number to Node object.
-    2. name: str = name of function of interest.
+    1. name: str = name of function of interest.
+    2. node_line_map: dict[int, Node] = maps line number to Node object.
     @Returns: list of potential target `Node` for function of interest.
     """
     prefix, suffix = type_check.get_prefix_and_suffix(name)
@@ -221,7 +270,16 @@ def add_subgraphs(
     root: Node,
     visited: set = set(),
 ):
-    """Recursively traverse (depth-first) the graph, `g`, and add corresponding subgraph to `root`."""
+    """
+    Recursively traverse (depth-first) the graph, `g`, and add corresponding subgraph to `root`.""
+
+    @Parameters:
+    1. node_representation: Graph = graph of all nodes.
+    2. graphviz_graph: graphviz.Digraph = graph to be modified and written (i.e. adding subgraph and nodes).
+    3. root: Node = Root node to start.
+    4. visited: Set = set to store all visited nodes.
+    @Returns: None.
+    """
 
     for node in node_representation.G.successors(root):
         node: Node = node
