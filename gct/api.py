@@ -83,6 +83,7 @@ def render(
     1. graphviz_object: graphviz.Digraph = Graphviz object to render.
     2. file_path: str = file path to save the output to. If None, the svg output (str) will be returned.
     3. output_format: str = Output format. Defaults to svg. Other formats include "png", "pdf".
+    @Returns: svg text of the graphviz object if file_path is not provided, otherwise an empty string
     """
     updated_file_path = (
         f"{TEMP_FOLDER}/{GRAPH_FOLDER_DEFAULT_NAME}"

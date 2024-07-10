@@ -42,11 +42,10 @@ class Graph:
 
     def get_parent_node(self, node: Node) -> Node:
         """
-        > Given a node, return the parent node
-
-        :param node: The node to get the parent of
-        :type node: Node
-        :return: The parent node of the node passed in.
+        Given a node, return the parent node
+        @Parameters:
+        1. node: Node = node to get the parent of.
+        @Returns: The parent node of the node passed in else None.
         """
         try:
             return list(self.G.predecessors(node))[0]
@@ -57,11 +56,16 @@ class Graph:
         return list(self.G.successors(node))
 
     def group_nodes_by_level(self):
+        """
+        Groups all nodes by level.
+        @Returns: Dictionary where the key is the parent node and value is all the children nodes.
+        """
         if self._level_clustering:
             return
 
         for node in self.get_all_nodes():
-            parent_node = self.get_parent_node(node)
+            parent_node = self.get_parent_node(node) 
+            # Nodes with no children (i.e. function not called) are not included in the graph.
             if parent_node is None:
                 continue
             self._level_clustering[parent_node] = self.get_children_nodes(parent_node)
@@ -85,23 +89,23 @@ class Graph:
         ```
         Running `print_graph_by_levels()` will print:
         ```
-        --- A(1, 8, class) ---
-            b(2, 5, function)
-            c(3, 5, function)
-            d(4, 5, function)
-            B(6, 8, class)
-        --- B(6, 8, class) ---
-            test(7, 8, function)
+        --- A #1 ---
+            b #2
+            c #3
+            d #4
+            B #6
+        --- B #6 ---
+            test #7
         ```
         Note how the nodes are printed by breath-first search order & not depth-first.
         Ideally, the output should look something like this:
         ```
-        --- A(1, 8, class) ---
-            b(2, 5, function)
-            c(3, 5, function)
-            d(4, 5, function)
-            --- B(6, 8, class) ---
-                test(7, 8, function)
+        --- A #1 ---
+            b #2
+            c #3
+            d #4
+            --- B #6 ---
+                test #7
         ```
         But you can leverage information stored in `self._level_clustering` to do this.
         """

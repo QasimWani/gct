@@ -27,12 +27,13 @@ def _is_dot_installed():
         return
 
     system = platform.system()
-    if system == "Windows":
-        message = "Graphviz package not install. Try running 'choco install -y graphviz'. \n If the error persists, install graphviz from here: https://graphviz.org/download"
-    elif system == "Darwin":  # macOS
-        message = "Graphviz package not install. Try running 'brew install graphviz'. \n If the error persists, install graphviz from here: https://graphviz.org/download"
-    else:  # assume Linux or other Unix-like system
-        message = "Graphviz package not install. Try running 'apt-get install graphviz'. \n If the error persists, install graphviz from here: https://graphviz.org/download"
+    installation_instructions = {
+        "Windows": "choco install -y graphviz",
+        "Darwin": "brew install graphviz",
+        "Linux": "apt-get install graphviz",
+    }
+    if system in installation_instructions:
+        message = f"Graphviz package not install. Try running '{installation_instructions[system]}'. \n If the error persists, install graphviz from here: https://graphviz.org/download"
 
     message += f"\nFor any other errors, please post an issue (response time <= 10 minutes): {GCT_ISSUE_LINK}"
     raise Exception(message)
