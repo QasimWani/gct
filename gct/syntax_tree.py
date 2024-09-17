@@ -1,7 +1,8 @@
 import ast
 from gct.network import Node
 from collections import deque
-
+from gct.summarize import CodeSummarizer
+from gct.utils import fetch_full_function
 
 class FunctionCallVisitor(ast.NodeVisitor):
     """Extract all function calls"""
@@ -32,12 +33,18 @@ class FunctionCallVisitor(ast.NodeVisitor):
 class UserDefinedFuncVisitor(ast.NodeVisitor):
     """Extract all user defined functions and classes"""
 
-    def __init__(self):
+    def __init__(self, raw_code: "list[str]", summarize: bool):
         self.node: Node = None
+        self.summarize = summarize
+        self.raw_code = raw_code
+        if self.summarize:
+            self.code_summarizer = CodeSummarizer()
 
     def create_node(self, node: ast.AST, node_name: str, type: str):
-        end_lineno = node.lineno - 1 if "end_lineno" in dir(node) else str(None)
-        self.node = Node(node.lineno - 1, end_lineno, node_name, type)
+        end_lineno = node.lineno - 1 if "end_lineno" in dir(node) else str(None) # FIXME: @qasim is this correct?
+        lines = fetch_full_function(self.raw_code, node.lineno - 1)
+        summary = self.code_summarizer.summarize(lines) if self.summarize else None
+        self.node = Node(node.lineno - 1, end_lineno, node_name, type, summary)
 
     def visit_Lambda(self, node: ast.Lambda):
         raise NotImplementedError("Lambda functions are not supported yet")

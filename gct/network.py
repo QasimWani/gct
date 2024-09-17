@@ -9,12 +9,14 @@ class Node:
         line_end: int,
         name: str,
         type: str = None,
+        description: str = None
     ):
         self.line_start = line_start
         self.line_end = line_end
         self.name = name
         self.type = type  # options: [function, class]
         self.id = uuid.uuid1().hex
+        self.description = description
 
     def __repr__(self) -> str:
         return f"{self.name} #{self.line_start + 1}"
